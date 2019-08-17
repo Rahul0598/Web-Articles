@@ -6,8 +6,8 @@ from multiprocessing.dummy import Pool as ThreadPool
 
 # port = 587
 # smtp_server = 'smtp.office365.com'
-# password = 'A$gard213'
-# sender = 'devajjir@outlook.com'
+# password = 'password'
+# sender = 'email-id'
 # receiver = sender
 
 base_url = "https://www.thehindu.com/archive/print/"
