@@ -1,0 +1,227 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+
+.main-header {
+    width: 100%;
+    position: fixed;
+    margin: 0;
+    background: black;
+    top: 0;
+    left: 0;
+    padding: 8px;
+    z-index: 1;
+}
+
+.main-header > div{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.main-header > div > a{
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    display: inline-block;
+    padding: 3px;
+}
+
+.main-header > div > a:hover,
+.main-header > div > a:active {
+    color: #4bff4b;
+}
+
+
+.main-div {
+    width: calc(100% - 70px);
+}
+
+.main-nav {
+    display: inline-block;
+    text-align: right;
+    width: 100 100 700 0;
+    width: calc(100% - 10px);
+    vertical-align: middle;
+}
+
+.main-nav__items {
+    margin: 0;
+    padding: 0;
+    list-style: none; 
+    display: inline-block;
+    width: 700;
+}
+
+.main-nav__item {
+    display: inline-block;
+    margin: 0 16px;
+    text-decoration: none;
+    /* width: 600px; */
+}
+
+
+
+.main-nav__item > a:hover,
+.main-nav__item > a:active {
+    color: #4bff4b;
+}
+
+
+.main-nav__select {
+    padding: 8px;
+    background: #2980B9;
+    border: none;
+    font-weight: bold;
+}
+
+.main-nav__select > option {
+    font-weight: bold;
+    color: white;
+    padding: 40px;
+}
+
+.main-nav__select::-ms-expand {
+    display: none;
+}
+
+.main-nav__item > a {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    padding: 3px;
+}
+
+
+
+.dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 8px;
+    cursor: pointer; 
+
+}
+
+.dropbtn:hover,
+.dropbtn:focus {
+    background-color: #2980B9;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    /* min-width: 100px; */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content > a{
+    color: black;
+    padding:  12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+
+.main-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: black;
+    padding: 32px;
+    list-style: none;
+    /* display: inline-block; */
+}
+
+.main-footer__links {
+    list-style: none;
+    margin: auto;
+    text-align: center;
+    /* display: inline-block; */
+}
+
+.main-footer__link {
+    display: inline-block;
+    padding: 0 28px;
+}
+
+.main-footer__link > a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    /* display: inline-block; */
+}
+
+.main-footer__link a:hover,
+.main-footer__link a:active {
+    color: #4bff4b;
+}
+
+
+
+
+
+
+
+
+
+
+
+.header-cover {
+    padding: 24px;
+    position: fixed;
+}
+
+.footer-cover {
+    padding: 40px;
+    /* position: fixed; */
+}
+
+
+.data-display > div{
+    display: inline-block;
+}
+
+.pie-chart {
+    font-style: inherit;
+    font-weight: 20px;
+    padding: 300px 300px 300px 10px;
+    background: #4bff4b;
+    /* margin: none; */
+    border: none;
+    max-width: 500px; 
+    margin-right: 500px; 
+}
+
+.pie-chart > p {
+    padding-right: 10px;
+    /* margin: auto; */
+    max-width: 500px; 
+}
+
+
+.histogram {
+    /* background: #3498DB; */
+}
+
+
+
+
