@@ -5,7 +5,7 @@ import re
 
 
 def mongo_connect():
-    client = MongoClient("mongodb+srv://devajji:" + parse.quote("A$gard213") +
+    client = MongoClient("mongodb+srv://user:" + parse.quote("password") +
                          "@cluster0-o1llq.mongodb.net/test?retryWrites=true&w=majority")
     db = client.WebArticles
     collection = db.TheHindu
