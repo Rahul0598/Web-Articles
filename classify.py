@@ -1,52 +1,59 @@
-from main import mongo_connect
+from main import mongoConnect
 from bson import ObjectId
-import pandas as pd
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
-# from sklearn.linear_model import SGDClassifier
+import pandas as pd
+import pickle
 
 
-def test_set():
+# retrieve contents of database and save in test_data.csv
+def getTestSet():
     li = []
     collection = mongo_connect()
     for document in collection.find():
         li.append(document)
     df = pd.DataFrame(li)
-    df[['_id', 'content']].to_csv('test_data.csv')
+    df[['_id', 'content']].to_csv('test_data.csv', index=False)
 
 
-def tagger():
-    df_train = pd.read_csv('train.csv')
-    df_test = pd.read_csv('test_data.csv')
+# train the data-set and save its serialized form
+def train():
+    df_train = pd.read_csv('train_short.csv')
     X_train = df_train.headline
     y_train = df_train.category
-    # null_columns = df_train.columns[df_train.isnull().any()]
-    # print(y_train[null_columns].isnull())
-    # print(df_train[df_train.isnull().any(axis=1)][null_columns].head())
-    # exit()
-    print(len(y_train), len(X_train))
-    X_test = df_test.content
-
-    # sgd = Pipeline([('vect', CountVectorizer()),
-    #                 ('tfidf', TfidfTransformer()),
-    #                 ('clf', SGDClassifier(loss='hinge', penalty='l2',
-    #                                       alpha=1e-3, random_state=42, max_iter=5, tol=None)),
-    #                 ])
-    # sgd.fit(X_train, y_train)
 
     nb = Pipeline([('vect', CountVectorizer()),
                    ('tfidf', TfidfTransformer()),
                    ('clf', MultinomialNB()),
                    ])
     nb.fit(X_train, y_train)
-    y_pred = nb.predict(X_test)
+
+    # serialize and save model
+    model_file_name = 'model.sav'
+    pickle.dump(nb, open(model_file_name, 'wb'))
+
+
+# predict the category of a single string of data
+def predictSingle(content_to_predict):
+    model = pickle.load(open('model.sav', 'rb'))
+    category = model.predict([content_to_predict])
+    return category
+
+
+# predict the categories of tuples stored  in .csv
+def predictMultiple():
+    model = pickle.load(open('model.sav', 'rb'))
+    df_test = pd.read_csv('wn_wp.csv')
+    X_test = df_test.headline
+    y_pred = model.predict(X_test)
     df_test['category'] = y_pred
-    df_test.to_csv('result.csv')
+    df_test.to_csv('wn_wp_res.csv', index=False)
 
 
-def update_database():
+# push the predictions of .csv into db
+def updateDatabase():
     df = pd.read_csv('result.csv')
     collection = mongo_connect()
     ids = df._id
@@ -56,6 +63,7 @@ def update_database():
 
 
 if __name__ == '__main__':
-    test_set()
-    tagger()
-    update_database()
+    # test_set()
+    # train()
+    predictMultiple()
+    # update_database()

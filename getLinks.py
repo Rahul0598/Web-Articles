@@ -1,20 +1,13 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from multiprocessing.dummy import Pool as ThreadPool
-# import smtplib
-# import ssl
 
-# port = 587
-# smtp_server = 'smtp.office365.com'
-# password = 'password'
-# sender = 'email-id'
-# receiver = sender
 
 base_url = "https://www.thehindu.com/archive/print/"
 page = urlopen(base_url)
 soup = BeautifulSoup(page, 'lxml')
 inpt = open('dates', 'r')
-output = open('2012-2019', 'w')
+output = open('2019', 'w')
 
 
 def getURL(url):
@@ -46,15 +39,6 @@ def getURL(url):
                 output.write('\n')
 
 
-# subject = 'YEAR DONE - ' + str(base_year - 1)
-# text = "TO GO - " + str(2019 - base_year + 1)
-# message = 'Subject: {}\n\n{}'.format(subject, text)
-# ctxt = ssl.create_default_context()
-# with smtplib.SMTP(smtp_server, port) as server:
-#     server.starttls(context=ctxt)
-#     server.ehlo()
-#     server.login(sender, password)
-#     server.sendmail(sender, receiver, message)
 urls = inpt.readlines()
 pool = ThreadPool(20)
 pool.map(getURL, urls)
