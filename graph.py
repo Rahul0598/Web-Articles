@@ -1,15 +1,32 @@
+from pymongo import MongoClient
+from urllib import parse
 import pandas as pd
-import matplotlib.pyplot as plot
+from pprint import pprint
+# import matplotlib.pyplot as plot
 
 
 # graph describing the training data-set
-def draw():
-    with open('train.csv', 'r') as data_file:
-        data = pd.read_csv(data_file)
-    df = pd.DataFrame(data)
-    freq = df['category'].value_counts()
-    freq.plot(kind='bar', title='Training Data Set Stats')
-    plot.show()
+def categoryCount():
+    client = MongoClient("mongodb+srv://devajji:" + parse.quote("asman$3686") +
+                         "@cluster0-o1llq.mongodb.net/test?retryWrites=true&w=majority")
+    db = client.WebArticles
+    collections = db.list_collection_names()
+    collections.remove('TheHindu')
+    collections.remove('TheHindu2')
+    agr = [{'$group': {'_id': '$category', 'count': {'$sum': 1}}}]
+    lst = []
+    for col_name in collections:
+        collection = db[col_name]
+        data = collection.aggregate(agr)
+        data = list(data)
+        for dics in data:
+            try:
+                exist = next(item for item in lst if item['_id'] == dics['_id'])
+                count = dics['count'] + exist['count']
+                lst[lst.index(exist)] = {'_id': dics['_id'], 'count': count}
+            except StopIteration:
+                lst.append({'_id': dics['_id'], 'count': dics['count']})
+    pprint(lst)
 
 
 def split_train_set():
@@ -32,3 +49,6 @@ def wn_wp():
     wn_wp = wn_wp.append(train[train['category'] == 'WORLDPOST'])
     wn_wp = wn_wp.append(train[train['category'] == 'WORLD NEWS'])
     wn_wp.to_csv('wn_wp.csv', index=False)
+
+
+draw()

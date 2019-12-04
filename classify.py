@@ -11,7 +11,7 @@ import pickle
 # retrieve contents of database and save in test_data.csv
 def getTestSet():
     li = []
-    collection = mongo_connect()
+    collection = mongoConnect()
     for document in collection.find():
         li.append(document)
     df = pd.DataFrame(li)
@@ -20,11 +20,11 @@ def getTestSet():
 
 # train the data-set and save its serialized form
 def train():
-    df_train = pd.read_csv('train_short.csv')
+    df_train = pd.read_csv('train_new.csv')
     X_train = df_train.headline
     y_train = df_train.category
 
-    nb = Pipeline([('vect', CountVectorizer()),
+    nb = Pipeline([('vect', CountVectorizer(ngram_range=(1, 3))),
                    ('tfidf', TfidfTransformer()),
                    ('clf', MultinomialNB()),
                    ])
@@ -55,7 +55,7 @@ def predictMultiple():
 # push the predictions of .csv into db
 def updateDatabase():
     df = pd.read_csv('result.csv')
-    collection = mongo_connect()
+    collection = mongoConnect()
     ids = df._id
     for id in ids:
         category = df.loc[df['_id'] == id].category.values[0]
@@ -64,6 +64,6 @@ def updateDatabase():
 
 if __name__ == '__main__':
     # test_set()
-    # train()
-    predictMultiple()
+    train()
+    # predictMultiple()
     # update_database()
