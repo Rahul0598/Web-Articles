@@ -6,6 +6,7 @@ from classify import predictSingle
 import re
 import sys
 from PIL import Image
+from datetime import datetime
 import requests
 
 
@@ -22,7 +23,7 @@ def getImage(url):
 
 
 def getArticle(url):
-    req = Request(url[11:], headers={'User-Agent': 'Mozilla/5.0'})
+    req = Request(url[10:], headers={'User-Agent': 'Mozilla/5.0'})
     page = urlopen(req)
     soup = BeautifulSoup(page, 'lxml')
     date = url[:8]
@@ -47,10 +48,10 @@ def getArticle(url):
         article = re.sub(r'[^\w\s]', '', article)
         article = article[1:len(article) - 1]
         category = predictSingle(article)
-        img_url = getImage(url[11:])
+        img_url = getImage(url[10:])
         doc = {
             "date": date,
-            "url": url[11:len(url) - 1],
+            "url": url[10:len(url) - 1],
             "title": title,
             "content": article,
             "imageUrl": img_url,
@@ -64,8 +65,16 @@ def getArticle(url):
 
 if __name__ == "__main__":
     pool = ThreadPool(8)
-    with open(sys.argv[1], 'r') as file:
+    today = datetime.today()
+    if today.day < 10:
+        today = str(today.year) + "/" + str(today.month) + "/" + "0" + str(today.day)
+    else:
+        today = str(today.year) + "/" + str(today.month) + "/" + str(today.day)
+    file_name = today.replace("/", "")
+    print(file_name)
+    with open(file_name, 'r') as file:
         collection = mongoConnect()
+        collection.remove()
         links = file.readlines()
         pool.map(getArticle, links)
     pool.close()

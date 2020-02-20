@@ -6,6 +6,6 @@ from urllib import parse
 def mongoConnect(name="Today"):
     client = MongoClient("mongodb+srv://scarydonut:" + parse.quote("YM7ZWNU5@mlab") +
                          "@cluster0-o1llq.mongodb.net/test?retryWrites=true&w=majority")
-    db = client.Twenty19 
+    db = client.Twenty20 
     collection = db[name]
     return collection         
