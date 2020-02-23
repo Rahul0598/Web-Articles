@@ -10,11 +10,7 @@ base_url = "https://www.thehindu.com/archive/print/"
 
 
 def getToday():
-    today = datetime.today()
-    if today.day < 10:
-        today = str(today.year) + "/" + str(today.month) + "/" + "0" + str(today.day)
-    else:
-        today = str(today.year) + "/" + str(today.month) + "/" + str(today.day)
+    today = formatDate()
     req = Request(base_url + today, headers={'User-Agent': 'Mozilla/5.0'})
     try:
         page = urlopen(req)

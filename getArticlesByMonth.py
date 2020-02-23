@@ -1,4 +1,4 @@
-from main import mongoConnect, formatDate
+from main import mongoConnectToDB
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
 from multiprocessing.dummy import Pool as ThreadPool
@@ -58,21 +58,22 @@ def getArticle(url):
             "category": category[0]
         }
         global collection
-        collection.insert_one(doc)
+        # collection.insert_one(doc)
+        collection.update(document = doc, upsert= True)
     except AttributeError:
         return
 
 
 if __name__ == "__main__":
     pool = ThreadPool(8)
-    today = formatDate()
-    file_name = today.replace("/", "")
+    today = datetime.today()
+    file_name = '2020217'
     print(file_name)
     with open(file_name, 'r') as file:
-        collection = mongoConnect()
-        collection.remove()
+        db = mongoConnectToDB()
+        collection = db[file_name]
+
         links = file.readlines()
         pool.map(getArticle, links)
     pool.close()
     pool.join()    
-    # getImage("https://www.thehindu.com/entertainment/movies/scarlett-johansson-is-all-rage-in-marvels-black-widow-teaser-trailer/article30147651.ece")
