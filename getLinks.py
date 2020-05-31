@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
 from multiprocessing.dummy import Pool as ThreadPool
 from datetime import datetime
-
+from main import formatDate
 
 base_url = "https://www.thehindu.com/archive/print/"
 # inpt = open('dates', 'r')
@@ -33,6 +33,7 @@ def getToday():
                     or ('stock' in href) or ('exchange' in href):
                 return
             else:
+                print(href)
                 output.write(file_name + ' - ' + href)
                 output.write('\n')
 

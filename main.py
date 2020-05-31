@@ -40,3 +40,11 @@ def formatDate():
          getDay = str(date.day)
          
     return str(date.year) + "/" + str(getMonth) + "/" + str(getDay)
+
+
+def mongoConnectNewsAPI(name="Today"):
+    client = MongoClient("mongodb+srv://scarydonut:" + parse.quote("YM7ZWNU5@mlab") +
+                         "@cluster0-o1llq.mongodb.net/test?retryWrites=true&w=majority")
+    db = client.Twenty20API 
+    collection = db[name]
+    return collection  

@@ -55,15 +55,23 @@ def getArticle(url):
             "title": title,
             "content": article,
             "imageUrl": img_url,
-            "category": category[0]
+            "category": category[0],
+            "clicks": 0
         }
         global collection
         collection.insert_one(doc)
     except AttributeError:
         return
 
+def moveArticles():
+    currentCollection = mongoConnect()
+    oldColl = mongoConnect("Old")
+    data = currentCollection.find()
+    oldColl.insert_many(data)
+
 
 if __name__ == "__main__":
+    moveArticles()
     pool = ThreadPool(8)
     today = formatDate()
     file_name = today.replace("/", "")

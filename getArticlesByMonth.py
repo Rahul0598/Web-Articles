@@ -67,7 +67,7 @@ def getArticle(url):
 if __name__ == "__main__":
     pool = ThreadPool(8)
     today = datetime.today()
-    file_name = '2020217'
+    file_name = 'thismonth'
     print(file_name)
     with open(file_name, 'r') as file:
         db = mongoConnectToDB()
